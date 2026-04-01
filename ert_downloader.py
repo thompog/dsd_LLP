@@ -1,20 +1,38 @@
-import requests
 import os
-import getpass
+import pathlib
 import sys
+import urllib.request
 
-username = getpass.getuser()
 
-if os.path.exists(f"C:\\Users\\{username}\\settings.txt"):
-  os.chdir("C:\\Users\\{username}")
-  f = with open("settings.txt", "r")
-else:
-  sys.exit(1)
+URL = "https://raw.githubusercontent.com/thompog/dsd_LLP/refs/heads/main/main.py"
+TARGET_NAME = "main.py"
 
-url = "https://raw.githubusercontent.com/thompog/dsd_LLP/refs/heads/main/main.py"
-directory = f.readline()
-filename = directory + 'main.py'
-r = requests.get(url)
 
-f = open(filename,'w')
-f.write(r.content)
+def get_download_dir() -> pathlib.Path:
+  settings_path = pathlib.Path.home() / "settings.txt"
+  if settings_path.exists():
+    configured = settings_path.read_text(encoding="utf-8").strip()
+    if configured:
+      return pathlib.Path(configured)
+  return pathlib.Path(os.environ.get("LOCALAPPDATA", str(pathlib.Path.home()))) / "DSD_LLP" / "Downloads"
+
+
+def main() -> int:
+  download_dir = get_download_dir()
+  download_dir.mkdir(parents=True, exist_ok=True)
+  output_path = download_dir / TARGET_NAME
+
+  try:
+    with urllib.request.urlopen(URL, timeout=60) as response:
+      data = response.read()
+    output_path.write_bytes(data)
+  except Exception as exc:
+    print(f"Download failed: {exc}")
+    return 1
+
+  print(f"Downloaded {TARGET_NAME} to: {output_path}")
+  return 0
+
+
+if __name__ == "__main__":
+  sys.exit(main())
