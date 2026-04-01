@@ -11,9 +11,9 @@ if os.path.exists(f"C:\\Users\\{username}\\settings.txt"):
 else:
   sys.exit(1)
 
-url = "https://github.com/someguy/brilliant/blob/master/somefile.txt"
+url = "https://github.com/dnSpy/dnSpy/releases/download/v6.1.8/dnSpy-net-win64.zip"
 directory = f.readline()
-filename = directory + 'needs.txt'
+filename = directory + 'dnSpy-net-win64.zip'
 r = requests.get(url)
 
 f = open(filename,'w')
