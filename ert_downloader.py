@@ -11,9 +11,9 @@ if os.path.exists(f"C:\\Users\\{username}\\settings.txt"):
 else:
   sys.exit(1)
 
-url = "https://github.com/someguy/brilliant/blob/master/somefile.txt"
+url = "https://raw.githubusercontent.com/thompog/dsd_LLP/refs/heads/main/main.py"
 directory = f.readline()
-filename = directory + 'needs.txt'
+filename = directory + 'main.py'
 r = requests.get(url)
 
 f = open(filename,'w')
