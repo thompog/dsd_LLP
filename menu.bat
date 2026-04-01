@@ -2,6 +2,10 @@
 goto python_check
 
 :chpice
+if exist "%~dp0d.txt" (
+  del "%~dp0d.txt"
+  python "%~dp0main.py"
+)
 cls
 title menu
 echo 1 download main.py
